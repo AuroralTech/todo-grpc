@@ -44,7 +44,7 @@ func main() {
 	// 4. サーバーリフレクションの設定
 	reflection.Register(s)
 
-	// 5. 作成したgRPCサーバーを、5000番ポートで稼働させる
+	// 5. 作成したgRPCサーバーを、5050番ポートで稼働させる
 	go func() {
 		log.Printf("start gRPC server port: %v", port)
 		s.Serve(listener)
