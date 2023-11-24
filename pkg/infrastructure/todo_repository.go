@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"github.com/AuroralTech/todo-grpc/pkg/domain/model"
 	"github.com/AuroralTech/todo-grpc/pkg/domain/repository"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type todoRepository struct {

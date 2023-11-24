@@ -20,22 +20,34 @@ func NewTodoHandler(usecase usecase.TodoUsecase) pb.TodoServiceServer {
 
 func (h *TodoHandler) AddTodo(ctx context.Context, req *pb.TodoItem) (*pb.TodoItem, error) {
 	todo := &model.Todo{Task: req.GetTask(), IsCompleted: req.GetIsCompleted()}
-	result, _ := h.usecase.AddTodo(todo)
+	result, err := h.usecase.AddTodo(todo)
+	if err != nil {
+		return nil, err
+	}
 	return &pb.TodoItem{Id: uint64(result.ID), Task: result.Task, IsCompleted: result.IsCompleted}, nil
 }
 
 func (h *TodoHandler) UpdateTodoStatus(ctx context.Context, req *pb.UpdateTodoStatusRequest) (*pb.UpdateTodoStatusResponse, error) {
-	success, _ := h.usecase.UpdateTodoStatus(req.GetId(), req.GetIsCompleted())
+	success, err := h.usecase.UpdateTodoStatus(req.GetId(), req.GetIsCompleted())
+	if err != nil {
+		return nil, err
+	}
 	return &pb.UpdateTodoStatusResponse{Success: success}, nil
 }
 
 func (h *TodoHandler) DeleteTodoById(ctx context.Context, req *pb.DeleteTodoByIdRequest) (*pb.DeleteTodoByIdResponse, error) {
-	success, _ := h.usecase.DeleteTodoById(req.GetId())
+	success, err := h.usecase.DeleteTodoById(req.GetId())
+	if err != nil {
+		return nil, err
+	}
 	return &pb.DeleteTodoByIdResponse{Success: success}, nil
 }
 
 func (h *TodoHandler) GetTodoList(ctx context.Context, req *emptypb.Empty) (*pb.TodoList, error) {
-	todos, _ := h.usecase.GetTodoList()
+	todos, err := h.usecase.GetTodoList()
+	if err != nil {
+		return nil, err
+	}
 	var todoItems []*pb.TodoItem
 	for _, todo := range todos {
 		todoItems = append(todoItems, &pb.TodoItem{Id: uint64(todo.ID), Task: todo.Task, IsCompleted: todo.IsCompleted})

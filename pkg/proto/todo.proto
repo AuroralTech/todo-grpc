@@ -41,8 +41,7 @@ message DeleteTodoByIdResponse {
 
 service TodoService {
   rpc AddTodo(data.TodoItem) returns (data.TodoItem);
-  rpc UpdateTodoStatus(UpdateTodoStatusRequest)
-      returns (UpdateTodoStatusResponse);
+  rpc UpdateTodoStatus(UpdateTodoStatusRequest) returns (UpdateTodoStatusResponse);
   rpc DeleteTodoById(DeleteTodoByIdRequest) returns (DeleteTodoByIdResponse);
   rpc GetTodoList(google.protobuf.Empty) returns (data.TodoList);
 }
