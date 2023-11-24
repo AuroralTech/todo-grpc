@@ -8,7 +8,7 @@ ENV TZ /usr/share/zoneinfo/Asia/Tokyo
 WORKDIR /go/src/app
 
 # ModuleモードをON
-ENV GO111MODULE=on
+ENV GO111MODULE=auto
 
 # ホストのファイルをコンテナの作業ディレクトリに移行
 COPY . .
