@@ -11,7 +11,6 @@ import (
 
 type TodoHandler struct {
 	usecase usecase.TodoUsecase
-	pb.UnimplementedTodoServiceServer
 }
 
 func NewTodoHandler(usecase usecase.TodoUsecase) pb.TodoServiceServer {

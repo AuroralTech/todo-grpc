@@ -3,6 +3,9 @@ package config
 import (
 	"fmt"
 	"os"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 type AppConfig struct {
@@ -24,7 +27,7 @@ func loadDatabaseURL(dbName string) (string, error) {
 	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true", mysqlUser, mysqlPassword, mysqlHost, mysqlPort, dbName), nil
 }
 
-func LoadConfig() (*AppConfig, error) {
+func loadConfig() (*AppConfig, error) {
 	databaseURL, err := loadDatabaseURL(os.Getenv("MYSQL_DATABASE"))
 	if err != nil {
 		return nil, err
@@ -39,6 +42,16 @@ func LoadConfig() (*AppConfig, error) {
 	}
 
 	return &config, nil
+}
+
+func NewSQLConnection() (*gorm.DB, error) {
+	cfg, err := loadConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	db, err := gorm.Open(mysql.Open(cfg.AppInfo.DatabaseURL), &gorm.Config{})
+	return db, err
 }
 
 // func LoadTestConfig() (*AppConfig, error) {

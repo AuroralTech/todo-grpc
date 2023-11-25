@@ -9,8 +9,8 @@ type TodoUsecase struct {
 	repo repository.TodoRepository
 }
 
-func NewTodoUsecase(repo repository.TodoRepository) *TodoUsecase {
-	return &TodoUsecase{repo}
+func NewTodoUsecase(repo repository.TodoRepository) TodoUsecase {
+	return TodoUsecase{repo}
 }
 
 func (u *TodoUsecase) AddTodo(todo *model.Todo) (*model.Todo, error) {

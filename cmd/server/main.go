@@ -9,8 +9,8 @@ import (
 
 	"github.com/AuroralTech/todo-grpc/config"
 	pb "github.com/AuroralTech/todo-grpc/pkg/generated"
+	handler "github.com/AuroralTech/todo-grpc/pkg/handler/grpc"
 	"github.com/AuroralTech/todo-grpc/pkg/infrastructure"
-	handler "github.com/AuroralTech/todo-grpc/pkg/interfaces/grpc"
 	"github.com/AuroralTech/todo-grpc/pkg/usecase"
 	"go.uber.org/fx"
 	"google.golang.org/grpc"
@@ -33,18 +33,16 @@ func main() {
 	// 4.依存関係の注入
 	app := fx.New(
 		fx.Provide(
-			config.LoadConfig,
-			infrastructure.NewSQLConnection,
+			config.NewSQLConnection,
 			infrastructure.NewTodoRepository,
 			usecase.NewTodoUsecase,
-			handler.NewTodoHandler,
 		),
 		fx.Invoke(
-			func(lc fx.Lifecycle, tu *usecase.TodoUsecase) {
+			func(lc fx.Lifecycle, tu usecase.TodoUsecase) {
 				lc.Append(fx.Hook{
 					OnStart: func(ctx context.Context) error {
 						// 5.gRPCサーバーにTodoHandlerを登録
-						pb.RegisterTodoServiceServer(s, handler.NewTodoHandler(*tu))
+						pb.RegisterTodoServiceServer(s, handler.NewTodoHandler(tu))
 						go func() {
 							// 6.gRPCサーバーを起動
 							log.Printf("start gRPC server port: %v", port)

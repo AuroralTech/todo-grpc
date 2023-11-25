@@ -6,18 +6,12 @@ import (
 
 	"github.com/AuroralTech/todo-grpc/config"
 	"github.com/AuroralTech/todo-grpc/pkg/domain/model"
-	"github.com/AuroralTech/todo-grpc/pkg/infrastructure"
 )
 
 func main() {
-	cfg, err := config.LoadConfig()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
 
 	if len(os.Args) > 1 && os.Args[1] == "down" {
-		err = down(cfg)
+		err := down()
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -25,7 +19,7 @@ func main() {
 		return
 	}
 
-	if err := migrate(cfg); err != nil {
+	if err := migrate(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
@@ -42,8 +36,8 @@ func main() {
 	// }
 }
 
-func migrate(cfg *config.AppConfig) error {
-	db, err := infrastructure.NewSQLConnection(cfg)
+func migrate() error {
+	db, err := config.NewSQLConnection()
 	if err != nil {
 		return err
 	}
@@ -63,8 +57,8 @@ func migrate(cfg *config.AppConfig) error {
 	return nil
 }
 
-func down(cfg *config.AppConfig) error {
-	db, err := infrastructure.NewSQLConnection(cfg)
+func down() error {
+	db, err := config.NewSQLConnection()
 	if err != nil {
 		return err
 	}
