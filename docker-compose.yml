@@ -17,7 +17,8 @@ services:
     volumes:
       - ./:/go/src/app # マウントディレクトリ
     depends_on:
-      - db
+      db:
+        condition: service_healthy # dbが起動してからgrpcを起動する
 
   db:
     image: mysql:8.2.0
@@ -35,3 +36,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_HOST: "%"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 10s
+      retries: 10

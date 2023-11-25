@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"os"
-	"os/signal"
 	"time"
 
 	"github.com/AuroralTech/todo-grpc/config"
@@ -29,10 +27,10 @@ func main() {
 	// 2. gRPCサーバーを作成
 	s := grpc.NewServer(grpc.UnaryInterceptor(loggingInterceptor))
 
-	// 4. サーバーリフレクションの設定
+	// 3. サーバーリフレクションの設定
 	reflection.Register(s)
 
-	// 依存関係の注入
+	// 4.依存関係の注入
 	app := fx.New(
 		fx.Provide(
 			config.LoadConfig,
@@ -42,26 +40,33 @@ func main() {
 			handler.NewTodoHandler,
 		),
 		fx.Invoke(
-			func(tu *usecase.TodoUsecase) {
-				pb.RegisterTodoServiceServer(s, handler.NewTodoHandler(*tu))
-				go func() {
-					log.Printf("start gRPC server port: %v", port)
-					if err := s.Serve(listener); err != nil {
-						log.Fatalf("failed to serve: %v", err)
-					}
-				}()
+			func(lc fx.Lifecycle, tu *usecase.TodoUsecase) {
+				lc.Append(fx.Hook{
+					OnStart: func(ctx context.Context) error {
+						// 5.gRPCサーバーにTodoHandlerを登録
+						pb.RegisterTodoServiceServer(s, handler.NewTodoHandler(*tu))
+						go func() {
+							// 6.gRPCサーバーを起動
+							log.Printf("start gRPC server port: %v", port)
+							if err := s.Serve(listener); err != nil {
+								log.Fatalf("failed to serve: %v", err)
+							}
+						}()
+						return nil
+					},
+					OnStop: func(ctx context.Context) error {
+						// 7.Graceful shutdownされるようにする
+						log.Println("stopping gRPC server...")
+						s.GracefulStop()
+						return nil
+					},
+				})
+
 			},
-		),
-	)
+		))
 
 	app.Run()
 
-	// 6.Ctrl+Cが入力されたらGraceful shutdownされるようにする
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt)
-	<-quit
-	log.Println("stopping gRPC server...")
-	s.GracefulStop()
 }
 
 // loggingInterceptor は、リクエストが来たときにログを出力するインターセプター
