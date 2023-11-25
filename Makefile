@@ -4,4 +4,4 @@ protoc-gen:
 
 .PHONY: migrate
 migrate:
-	go run cmd/migrate/main.go
+	go run cmd/migration/main.go
