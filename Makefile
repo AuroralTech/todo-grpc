@@ -1,6 +1,6 @@
 .PHONY: protoc-gen
 protoc-gen:
-	protoc --go_out=. --go-grpc_out=require_unimplemented_servers=false:. pkg/proto/*.proto
+	protoc  -I ${GOPATH}/src/app -I ${GOPATH}/src/github.com/envoyproxy/protoc-gen-validate --go_out=. --go-grpc_out=require_unimplemented_servers=false:. pkg/proto/*.proto
 
 .PHONY: migrate
 migrate:
