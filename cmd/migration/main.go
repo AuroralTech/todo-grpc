@@ -43,7 +43,7 @@ func main() {
 }
 
 func migrate(cfg *config.AppConfig) error {
-	db, err := infrastructure.NewSQLConnection(cfg.AppInfo.DatabaseURL)
+	db, err := infrastructure.NewSQLConnection(cfg)
 	if err != nil {
 		return err
 	}
@@ -64,7 +64,7 @@ func migrate(cfg *config.AppConfig) error {
 }
 
 func down(cfg *config.AppConfig) error {
-	db, err := infrastructure.NewSQLConnection(cfg.AppInfo.DatabaseURL)
+	db, err := infrastructure.NewSQLConnection(cfg)
 	if err != nil {
 		return err
 	}
