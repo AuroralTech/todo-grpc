@@ -12,7 +12,7 @@ make create-network
 docker-compose up -d
 ```
 
-## PlayGround
+## gRPC UI
 下記コマンドを実行する
 ```
 grpcui -v -plaintext localhost:5050
