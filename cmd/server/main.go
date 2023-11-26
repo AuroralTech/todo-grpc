@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/AuroralTech/todo-grpc/config"
-	pb "github.com/AuroralTech/todo-grpc/pkg/generated"
+	pb "github.com/AuroralTech/todo-grpc/pkg/grpc/generated"
 	handler "github.com/AuroralTech/todo-grpc/pkg/handler/grpc"
 	"github.com/AuroralTech/todo-grpc/pkg/infrastructure"
 	"github.com/AuroralTech/todo-grpc/pkg/usecase"

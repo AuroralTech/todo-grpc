@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/AuroralTech/todo-grpc/pkg/domain/model"
-	pb "github.com/AuroralTech/todo-grpc/pkg/generated"
+	pb "github.com/AuroralTech/todo-grpc/pkg/grpc/generated"
 	"github.com/AuroralTech/todo-grpc/pkg/usecase"
 	"google.golang.org/protobuf/types/known/emptypb"
 )

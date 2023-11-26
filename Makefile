@@ -6,7 +6,7 @@ protoc-gen:
 protoc-lint:
 	buf lint
 
-.PHONY: protoc-breaking
+.PHONY: protoc-update
 protoc-update:
 	buf mod update
 
