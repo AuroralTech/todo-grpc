@@ -13,13 +13,14 @@ services:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_PORT: ${MYSQL_PORT}
     ports:
-      - 5050:5000
+      - 5050:5050
     volumes:
       - ./:/go/src/app # マウントディレクトリ
     depends_on:
       db:
         condition: service_healthy # dbが起動してからgrpcを起動する
-
+    networks:
+      - bff_grpc_network
   db:
     image: mysql:8.2.0
     ports:
@@ -41,3 +42,9 @@ services:
       interval: 10s
       timeout: 10s
       retries: 10
+    networks:
+      - bff_grpc_network
+
+networks:
+  bff_grpc_network:
+    external: true

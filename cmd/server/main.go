@@ -19,7 +19,7 @@ import (
 
 func main() {
 	// 1. 5000番portのLisnterを作成
-	port := 5000
+	port := 5050
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		panic(err)
