@@ -19,6 +19,7 @@ RUN apk add --no-cache make protobuf protobuf-dev git
 # protoc-gen-goとprotoc-gen-go-grpcのインストール
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+RUN go install github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest
 
 # bufのインストール
 RUN go install github.com/bufbuild/buf/cmd/buf@latest

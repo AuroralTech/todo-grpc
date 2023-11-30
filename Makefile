@@ -3,6 +3,11 @@
 protoc-gen:
 	buf generate
 
+# protoからdocumentを生成する
+.PHONY: protoc-doc-gen
+protoc-doc-gen:
+	protoc --doc_out=./doc --doc_opt=markdown,index.md ./pkg/proto/*.proto
+
 # protoのlintを実行する
 .PHONY: protoc-lint
 protoc-lint:
