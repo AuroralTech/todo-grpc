@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"time"
 
 	"github.com/AuroralTech/todo-grpc/config"
 	pb "github.com/AuroralTech/todo-grpc/pkg/grpc/generated"
 	handler "github.com/AuroralTech/todo-grpc/pkg/handler/grpc"
 	"github.com/AuroralTech/todo-grpc/pkg/infrastructure"
+	"github.com/AuroralTech/todo-grpc/pkg/interceptors"
 	"github.com/AuroralTech/todo-grpc/pkg/usecase"
 	"go.uber.org/fx"
 	"google.golang.org/grpc"
@@ -25,7 +25,7 @@ func main() {
 		panic(err)
 	}
 	// 2. gRPCサーバーを作成
-	s := grpc.NewServer(grpc.UnaryInterceptor(loggingInterceptor))
+	s := grpc.NewServer(grpc.UnaryInterceptor(interceptors.LoggingInterceptor))
 
 	// 3. サーバーリフレクションの設定
 	reflection.Register(s)
@@ -65,13 +65,4 @@ func main() {
 
 	app.Run()
 
-}
-
-// loggingInterceptor は、リクエストが来たときにログを出力するインターセプター
-func loggingInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-	start := time.Now()
-	log.Printf("Request - Method:%s\tBody:%v\n", info.FullMethod, req)
-	h, err := handler(ctx, req)
-	log.Printf("Response - Method:%s\tDuration:%s\tError:%v\n", info.FullMethod, time.Since(start), err)
-	return h, err
 }

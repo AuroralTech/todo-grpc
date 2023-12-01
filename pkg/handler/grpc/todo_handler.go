@@ -18,6 +18,9 @@ func NewTodoHandler(usecase usecase.TodoUsecase) pb.TodoServiceServer {
 }
 
 func (h *TodoHandler) AddTodo(ctx context.Context, req *pb.TodoItem) (*pb.TodoItem, error) {
+	if err := Authenticate(ctx); err != nil {
+		return nil, err
+	}
 	todo := &model.Todo{Task: req.GetTask(), IsCompleted: req.GetIsCompleted()}
 	result, err := h.usecase.AddTodo(todo)
 	if err != nil {
