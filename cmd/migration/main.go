@@ -42,7 +42,7 @@ func migrate() error {
 		return err
 	}
 
-	err = db.AutoMigrate(&model.Todo{})
+	err = db.AutoMigrate(&model.Todo{}, &model.User{}, &model.Profile{}, &model.Follow{}, &model.Post{}, &model.Favorite{})
 	if err != nil {
 		return err
 	}
