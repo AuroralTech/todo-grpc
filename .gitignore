@@ -1,3 +1,4 @@
 .env
 mysql
 tmp
+firebase-admin-sdk.json
