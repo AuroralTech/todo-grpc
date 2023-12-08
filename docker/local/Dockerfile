@@ -24,6 +24,9 @@ RUN go install github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest
 # bufのインストール
 RUN go install github.com/bufbuild/buf/cmd/buf@latest
 
+# protoc-gen-validateのインストール
+RUN go install github.com/envoyproxy/protoc-gen-validate@latest
+
 # AIRのインストール
 RUN go install github.com/cosmtrek/air@latest
 
