@@ -24,19 +24,19 @@ func Authenticate(ctx context.Context) error {
 	// 3.Firebase SDKの初期化
 	app, err := firebase.NewApp(context.Background(), nil)
 	if err != nil {
-		log.Fatalf("error initializing app: %v\n", err)
+		log.Printf("error initializing app: %v\n", err)
 	}
 
 	// 4.認証クライアントを取得
 	client, err := app.Auth(ctx)
 	if err != nil {
-		log.Fatalf("error getting Auth client: %v\n", err)
+		log.Printf("error getting Auth client: %v\n", err)
 	}
 
 	// 5.トークンを検証
 	token, err := client.VerifyIDToken(ctx, idToken)
 	if err != nil {
-		log.Fatalf("error verifying ID token: %v\n", err)
+		log.Printf("error verifying ID token: %v\n", err)
 	}
 
 	log.Printf("Verified ID token: %v\n", token)

@@ -47,7 +47,7 @@ func main() {
 							// 6.gRPCサーバーを起動
 							log.Printf("start gRPC server port: %v", port)
 							if err := s.Serve(listener); err != nil {
-								log.Fatalf("failed to serve: %v", err)
+								log.Printf("failed to serve: %v", err)
 							}
 						}()
 						return nil
