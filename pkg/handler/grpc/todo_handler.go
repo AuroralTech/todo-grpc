@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/AuroralTech/todo-grpc/pkg/domain/model"
 	pb "github.com/AuroralTech/todo-grpc/pkg/grpc/generated"
@@ -19,12 +20,12 @@ func NewTodoHandler(usecase usecase.TodoUsecase) pb.TodoServiceServer {
 
 func (h *TodoHandler) AddTodo(ctx context.Context, req *pb.TodoItem) (*pb.TodoItem, error) {
 	if err := Authenticate(ctx); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to authenticate: %v", err)
 	}
 	todo := &model.Todo{Task: req.GetTask(), IsCompleted: req.GetIsCompleted()}
 	result, err := h.usecase.AddTodo(todo)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to add todo: %v", err)
 	}
 	return &pb.TodoItem{Id: uint64(result.ID), Task: result.Task, IsCompleted: result.IsCompleted}, nil
 }
