@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"log"
 
 	"github.com/AuroralTech/todo-grpc/pkg/domain/model"
 	pb "github.com/AuroralTech/todo-grpc/pkg/grpc/generated"
@@ -26,6 +27,7 @@ func (h *TodoHandler) AddTodo(ctx context.Context, req *pb.TodoItem) (*pb.TodoIt
 	todo := &model.Todo{Task: req.GetTask(), IsCompleted: req.GetIsCompleted()}
 	result, err := h.usecase.AddTodo(todo)
 	if err != nil {
+		log.Println(err)
 		return nil, status.Error(codes.Internal, "failed to add todo")
 	}
 	return &pb.TodoItem{Id: uint64(result.ID), Task: result.Task, IsCompleted: result.IsCompleted}, nil
@@ -34,6 +36,7 @@ func (h *TodoHandler) AddTodo(ctx context.Context, req *pb.TodoItem) (*pb.TodoIt
 func (h *TodoHandler) UpdateTodoStatus(ctx context.Context, req *pb.UpdateTodoStatusRequest) (*pb.UpdateTodoStatusResponse, error) {
 	success, err := h.usecase.UpdateTodoStatus(req.GetId(), req.GetIsCompleted())
 	if err != nil {
+		log.Println(err)
 		return nil, status.Error(codes.Internal, "failed to update todo status")
 	}
 	return &pb.UpdateTodoStatusResponse{Success: success}, nil
@@ -42,6 +45,7 @@ func (h *TodoHandler) UpdateTodoStatus(ctx context.Context, req *pb.UpdateTodoSt
 func (h *TodoHandler) DeleteTodoById(ctx context.Context, req *pb.DeleteTodoByIdRequest) (*pb.DeleteTodoByIdResponse, error) {
 	success, err := h.usecase.DeleteTodoById(req.GetId())
 	if err != nil {
+		log.Println(err)
 		return nil, status.Error(codes.Internal, "failed to delete todo")
 	}
 	return &pb.DeleteTodoByIdResponse{Success: success}, nil
@@ -50,6 +54,7 @@ func (h *TodoHandler) DeleteTodoById(ctx context.Context, req *pb.DeleteTodoById
 func (h *TodoHandler) GetTodoList(ctx context.Context, req *emptypb.Empty) (*pb.TodoList, error) {
 	todos, err := h.usecase.GetTodoList()
 	if err != nil {
+		log.Println(err)
 		return nil, status.Error(codes.Internal, "failed to get todo list")
 	}
 	var todoItems []*pb.TodoItem

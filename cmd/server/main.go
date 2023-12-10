@@ -10,7 +10,6 @@ import (
 	pb "github.com/AuroralTech/todo-grpc/pkg/grpc/generated"
 	handler "github.com/AuroralTech/todo-grpc/pkg/handler/grpc"
 	"github.com/AuroralTech/todo-grpc/pkg/infrastructure"
-	"github.com/AuroralTech/todo-grpc/pkg/interceptors"
 	"github.com/AuroralTech/todo-grpc/pkg/usecase"
 	"go.uber.org/fx"
 	"google.golang.org/grpc"
@@ -25,7 +24,7 @@ func main() {
 		panic(err)
 	}
 	// 2. gRPCサーバーを作成
-	s := grpc.NewServer(grpc.UnaryInterceptor(interceptors.LoggingInterceptor))
+	s := grpc.NewServer()
 
 	// 3. サーバーリフレクションの設定
 	reflection.Register(s)
