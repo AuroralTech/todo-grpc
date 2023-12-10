@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"fmt"
+
 	"github.com/AuroralTech/todo-grpc/pkg/domain/model"
 	"github.com/AuroralTech/todo-grpc/pkg/domain/repository"
 )
@@ -20,17 +22,33 @@ func NewTodoUsecase(repo repository.TodoRepository) TodoUsecase {
 }
 
 func (u *todoUsecase) AddTodo(todo *model.Todo) (*model.Todo, error) {
-	return u.repo.AddTodo(todo)
+	todo, err := u.repo.AddTodo(todo)
+	if err != nil {
+		return nil, fmt.Errorf("TodoUsecase: failed to AddTodo: %v", err)
+	}
+	return todo, nil
 }
 
 func (u *todoUsecase) UpdateTodoStatus(id string, isCompleted bool) (bool, error) {
-	return u.repo.UpdateTodoStatus(id, isCompleted)
+	res, err := u.repo.UpdateTodoStatus(id, isCompleted)
+	if err != nil {
+		return false, fmt.Errorf("TodoUsecase: failed to UpdateTodoStatus: %v", err)
+	}
+	return res, nil
 }
 
 func (u *todoUsecase) DeleteTodoById(id string) (bool, error) {
-	return u.repo.DeleteTodoById(id)
+	res, err := u.repo.DeleteTodoById(id)
+	if err != nil {
+		return false, fmt.Errorf("TodoUsecase: failed to DeleteTodoById: %v", err)
+	}
+	return res, nil
 }
 
 func (u *todoUsecase) GetTodoList() ([]*model.Todo, error) {
-	return u.repo.GetTodoList()
+	todoList, err := u.repo.GetTodoList()
+	if err != nil {
+		return nil, fmt.Errorf("TodoUsecase: failed to GetTodoList: %v", err)
+	}
+	return todoList, nil
 }
